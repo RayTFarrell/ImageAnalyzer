@@ -1,0 +1,6 @@
+DROP TABLE IF EXISTS IMAGES;
+CREATE TABLE IMAGES (
+    id IDENTITY NOT NULL primary key,
+    label VARCHAR(50) NOT NULL,
+    objects VARCHAR(MAX)
+);
