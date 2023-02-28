@@ -5,7 +5,7 @@ Spring REST api utilizing Immaga API for image analysis
 By default, the Spring application can be reached at localhost:8080.
 The API key to reach the Imagga service is stored as an environment variable for security purposed, typically pulled from a service like Hshicorp Vault.
 
-### Endpoints Avaliable
+### Endpoints Available
 
 localhost:8080/images
 - RequestMapping.GET
