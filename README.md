@@ -3,7 +3,7 @@ Spring REST api utilizing Immaga API for image analysis
 
 ## How to use the REST api
 By default, the Spring application can be reached at localhost:8080.
-The API key to reach the Imagga service is stored as an environment variable for security purposed, typically pulled from a service like Hshicorp Vault.
+The API key to reach the Imagga service is stored as an environment variable for security purposed, typically pulled from a service like Hashicorp Vault.
 
 ### Endpoints Available
 
@@ -21,9 +21,9 @@ localhost:8080/images/{id}
 
 localhost:8080/images
 - RequestMapping.POST
-- Will store the provided image and meta data into the H2 database.
-- Enpoint consumes optional multipart/form-data in this format: {url : urlString, file : file, label : labelString, objectDetectionEnabled : objectDetectionEnabledString}
-- Request must contain only a url OR a image file. If both are provided, or neither, the client is served a bad request reponse.
+- Will store the provided image and metadata into the H2 database.
+- Endpoint consumes optional multipart/form-data in this format: {url : urlString, file : file, label : labelString, objectDetectionEnabled : objectDetectionEnabledString}
+- Request must contain only an url OR an image file. If both are provided, or neither, the client is served a bad request response.
 - If label is not provided, one is generated for the database entry based on the url or file base name.
 - If objectDetectionEnabled is set to true, the Imagga API is called to return a list of objects detected in the image, which is stored in the H2 database.
 
