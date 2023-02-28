@@ -78,7 +78,7 @@ public class ImageService {
         imagesRepository.save(imageEntity);
         return imageEntity;
     }
-    public List<ImageEntity> findImagesWithOptionalParams(String objects) {
+    public List<ImageEntity> findImagesWithOptionalParams(String objects) throws ImageProcessingException {
         if (objects == null) {
             return imagesRepository.findAll();
         }
@@ -86,9 +86,14 @@ public class ImageService {
             List<ImageEntity> imageEntityList = new ArrayList<>();
             List<String> objectsList = Stream.of(objects.split(",", -1))
                     .collect(Collectors.toList());
-            objectsList.forEach(object -> {
-                imageEntityList.addAll(imagesRepository.findByObjectsContains(object));
-            });
+            try {
+                objectsList.forEach(object -> {
+                    imageEntityList.addAll(imagesRepository.findByObjectsContains(object));
+                });
+            }
+            catch (Exception e){
+                throw new ImageProcessingException(e.getClass().getName()  + " " + e.getMessage());
+            }
             return imageEntityList;
         }
     }

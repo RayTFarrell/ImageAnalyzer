@@ -23,18 +23,13 @@ class ImagesRepositoryTest {
 
     @Test
     void findByIDTest() {
-        ImageEntity imageEntity = ImageEntity.builder().id(0)
-                .fileName("test.jpg")
-                .contentType("jpg")
-                .label("test_label")
-                .objects("{test: field}").build();
-        Optional<ImageEntity> imageEntityResult = imagesRepository.findById(imageEntity.getId());
+        Optional<ImageEntity> imageEntityResult = imagesRepository.findById(0);
 
-        assertEquals(imageEntityResult.get().getId(), imageEntity.getId());
-        assertEquals(imageEntityResult.get().getFileName(), imageEntity.getFileName());
-        assertEquals(imageEntityResult.get().getContentType(), imageEntity.getContentType());
-        assertEquals(imageEntityResult.get().getLabel(), imageEntity.getLabel());
-        assertEquals(imageEntityResult.get().getObjects(), imageEntity.getObjects());
+        assertEquals(0, imageEntityResult.get().getId());
+        assertEquals("test.jpg", imageEntityResult.get().getFileName());
+        assertEquals("jpg", imageEntityResult.get().getContentType());
+        assertEquals("test_label", imageEntityResult.get().getLabel());
+        assertEquals("test, dog, cat, tree", imageEntityResult.get().getObjects());
     }
     @Test
     void findAllTest() {
@@ -48,12 +43,12 @@ class ImagesRepositoryTest {
         assertEquals("test.png", imageEntity.get().getFileName());
         assertEquals("png", imageEntity.get().getContentType());
         assertEquals("test_label2", imageEntity.get().getLabel());
-        assertEquals("{test: field}", imageEntity.get().getObjects());
+        assertEquals("test, bear, cat", imageEntity.get().getObjects());
     }
     @Test
     void findAllByObjectsTest() {
-        List<ImageEntity> imageEntitySet = imagesRepository.findByObjectsContains("dog");
-        assertEquals(2, imageEntitySet.size());
+        List<ImageEntity> imageEntitySet = imagesRepository.findByObjectsContains("cat");
+        assertEquals(3, imageEntitySet.size());
     }
 
 }
