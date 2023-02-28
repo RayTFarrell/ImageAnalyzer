@@ -24,11 +24,15 @@ class ImagesRepositoryTest {
     @Test
     void findByIDTest() {
         ImageEntity imageEntity = ImageEntity.builder().id(0)
+                .fileName("test.jpg")
+                .contentType("jpg")
                 .label("test_label")
                 .objects("{test: field}").build();
         Optional<ImageEntity> imageEntityResult = imagesRepository.findById(imageEntity.getId());
 
         assertEquals(imageEntityResult.get().getId(), imageEntity.getId());
+        assertEquals(imageEntityResult.get().getFileName(), imageEntity.getFileName());
+        assertEquals(imageEntityResult.get().getContentType(), imageEntity.getContentType());
         assertEquals(imageEntityResult.get().getLabel(), imageEntity.getLabel());
         assertEquals(imageEntityResult.get().getObjects(), imageEntity.getObjects());
     }
@@ -39,14 +43,16 @@ class ImagesRepositoryTest {
     }
     @Test
     void findAllById() {
-        Optional<ImageEntity> imageEntity = imagesRepository.findById(3);
-        assertEquals(3, imageEntity.get().getId());
-        assertEquals("test_label3", imageEntity.get().getLabel());
+        Optional<ImageEntity> imageEntity = imagesRepository.findById(1);
+        assertEquals(1, imageEntity.get().getId());
+        assertEquals("test.png", imageEntity.get().getFileName());
+        assertEquals("png", imageEntity.get().getContentType());
+        assertEquals("test_label2", imageEntity.get().getLabel());
         assertEquals("{test: field}", imageEntity.get().getObjects());
     }
     @Test
     void findAllByObjectsTest() {
-        List<ImageEntity> imageEntitySet = imagesRepository.findByObjectsContaining("dog");
+        List<ImageEntity> imageEntitySet = imagesRepository.findByObjectsContains("dog");
         assertEquals(2, imageEntitySet.size());
     }
 

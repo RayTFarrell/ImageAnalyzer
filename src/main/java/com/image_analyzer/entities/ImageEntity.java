@@ -23,6 +23,10 @@ public class ImageEntity implements Serializable {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
+    @Column(name="FILENAME")
+    private String fileName;
+    @Column(name="CONTENTTYPE")
+    private String contentType;
     @Column(name="LABEL")
     private String label;
     @Column(name="OBJECTS")

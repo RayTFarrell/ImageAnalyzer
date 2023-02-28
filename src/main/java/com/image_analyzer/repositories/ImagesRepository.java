@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface ImagesRepository extends CrudRepository<ImageEntity, Integer> {
     List<ImageEntity> findAll();
-    List<ImageEntity> findByObjectsContaining(String string);
+    List<ImageEntity> findByObjectsContains(String string);
 
 }
