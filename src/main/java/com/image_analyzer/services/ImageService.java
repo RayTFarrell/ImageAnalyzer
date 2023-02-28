@@ -1,6 +1,8 @@
 package com.image_analyzer.services;
 
 import com.image_analyzer.entities.ImageEntity;
+import com.image_analyzer.exceptions.ImageProcessingException;
+import com.image_analyzer.exceptions.InvalidParametersException;
 import com.image_analyzer.repositories.ImagesRepository;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,19 @@ public class ImageService {
     @Autowired
     ImaggaService imaggaService;
 
+    public ImageEntity handleRequest(String url,
+                                     MultipartFile file,
+                                     String label,
+                                     String objectDetectionEnabled) throws IOException, InvalidParametersException {
+        if (url != null && file == null) {
+            return processImageURL(url, label, objectDetectionEnabled);
+        } else if (url == null && file != null) {
+            return processImageFile(file, label, objectDetectionEnabled);
+        }
+        else{
+            throw new InvalidParametersException("Invalid Request parameters: " + url + file +  label + objectDetectionEnabled);
+        }
+    }
     public ImageEntity processImageURL(String url,
                                     String label,
                                     String objectDetectionEnabled) throws IOException {
@@ -63,9 +78,9 @@ public class ImageService {
         imagesRepository.save(imageEntity);
         return imageEntity;
     }
-    public ResponseEntity findImagesWithOptionalParams(String objects) {
+    public List<ImageEntity> findImagesWithOptionalParams(String objects) {
         if (objects == null) {
-            return new ResponseEntity<>(imagesRepository.findAll(), HttpStatus.OK);
+            return imagesRepository.findAll();
         }
         else {
             List<ImageEntity> imageEntityList = new ArrayList<>();
@@ -74,7 +89,7 @@ public class ImageService {
             objectsList.forEach(object -> {
                 imageEntityList.addAll(imagesRepository.findByObjectsContains(object));
             });
-            return new ResponseEntity<>(imageEntityList, HttpStatus.OK);
+            return imageEntityList;
         }
     }
 }
