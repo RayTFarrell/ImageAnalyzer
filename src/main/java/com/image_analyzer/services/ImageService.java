@@ -6,15 +6,14 @@ import com.image_analyzer.exceptions.InvalidParametersException;
 import com.image_analyzer.repositories.ImagesRepository;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -83,18 +82,18 @@ public class ImageService {
             return imagesRepository.findAll();
         }
         else {
-            List<ImageEntity> imageEntityList = new ArrayList<>();
+            Set<ImageEntity> imageEntitySet = new HashSet<>();
             List<String> objectsList = Stream.of(objects.split(",", -1))
                     .collect(Collectors.toList());
             try {
                 objectsList.forEach(object -> {
-                    imageEntityList.addAll(imagesRepository.findByObjectsContains(object));
+                    imageEntitySet.addAll(imagesRepository.findByObjectsContains(object));
                 });
             }
             catch (Exception e){
                 throw new ImageProcessingException(e.getClass().getName()  + " " + e.getMessage());
             }
-            return imageEntityList;
+            return imageEntitySet.stream().toList();
         }
     }
 }
